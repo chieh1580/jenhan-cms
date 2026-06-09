@@ -1,0 +1,59 @@
+{% extends 'admin/base.html' %}
+{% block title %}在售建案{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>在售建案</h1>
+  <a href="{{ url_for('admin_project_new') }}" class="btn btn-primary">新增建案</a>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>排序</th>
+      <th>圖片</th>
+      <th>建案名稱</th>
+      <th>區域</th>
+      <th>狀態</th>
+      <th>顯示</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.sort_order }}</td>
+      <td>
+        {% if item.image_id %}
+        <img src="{{ url_for('serve_image', image_id=item.image_id) }}" alt="{{ item.name }}">
+        {% else %}
+        <span style="color:#999;font-size:12px;">無圖片</span>
+        {% endif %}
+      </td>
+      <td><strong>{{ item.name }}</strong></td>
+      <td>{{ item.location }}</td>
+      <td>
+        {% if item.status == '銷售中' %}
+        <span class="badge badge-green">{{ item.status }}</span>
+        {% elif item.status == '準備中' %}
+        <span class="badge badge-yellow">{{ item.status }}</span>
+        {% else %}
+        <span class="badge badge-gray">{{ item.status }}</span>
+        {% endif %}
+      </td>
+      <td>{{ '是' if item.visible else '否' }}</td>
+      <td>
+        <div class="actions">
+          <a href="{{ url_for('admin_project_edit', id=item.id) }}" class="btn btn-sm btn-outline">編輯</a>
+          <form method="POST" action="{{ url_for('admin_project_delete', id=item.id) }}" onsubmit="return confirm('確定要刪除嗎？')">
+            <button type="submit" class="btn btn-sm btn-danger">刪除</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="7" style="text-align:center;color:#999;padding:40px;">尚無在售建案</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

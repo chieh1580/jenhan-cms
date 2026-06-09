@@ -1,0 +1,83 @@
+{% extends 'admin/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="name">建案名稱 *</label>
+      <input type="text" id="name" name="name" value="{{ item.name if item else '' }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="location">區域位置</label>
+      <input type="text" id="location" name="location" value="{{ item.location if item else '' }}" placeholder="例：龍潭區、中壢區">
+    </div>
+
+    <div class="form-group">
+      <label for="product_type">產品類型</label>
+      <input type="text" id="product_type" name="product_type" value="{{ item.product_type if item else '住宅建案' }}" placeholder="例：住宅建案、5戶住宅">
+    </div>
+
+    <div class="form-group">
+      <label for="status">銷售狀態</label>
+      <select id="status" name="status">
+        {% set current_status = item.status if item else ('銷售中' if item_type == 'project' else '完銷') %}
+        <option value="銷售中" {{ 'selected' if current_status == '銷售中' }}>銷售中</option>
+        <option value="準備中" {{ 'selected' if current_status == '準備中' }}>準備中</option>
+        <option value="即將公開" {{ 'selected' if current_status == '即將公開' }}>即將公開</option>
+        <option value="完銷" {{ 'selected' if current_status == '完銷' }}>完銷</option>
+      </select>
+    </div>
+
+    {% if item_type == 'work' %}
+    <div class="form-group">
+      <label for="service_content">服務內容</label>
+      <input type="text" id="service_content" name="service_content" value="{{ item.service_content if item else '建案企劃｜銷售整合｜案場銷售' }}">
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="description">建案說明</label>
+      <textarea id="description" name="description" rows="4">{{ item.description if item else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="link">點擊連結</label>
+      <input type="text" id="link" name="link" value="{{ item.link if item else '' }}" placeholder="例：https://line.me/xxx 或留空">
+      <div class="help">訪客點擊此卡片後前往的網址（LINE、Google 表單、外部網頁等），留空則不連結。</div>
+    </div>
+
+    <div class="form-group">
+      <label for="image">封面圖片</label>
+      <input type="file" id="image" name="image" accept="image/*">
+      <div class="help">建議尺寸 1200x750 以上，JPG 或 PNG。圖片會自動壓縮。</div>
+      {% if item and item.image_id %}
+      <div class="current-img">
+        <p style="font-size:12px;color:#999;margin-top:8px;">目前圖片：</p>
+        <img src="{{ url_for('serve_image', image_id=item.image_id) }}" alt="目前圖片">
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="sort_order">排序順序</label>
+      <input type="number" id="sort_order" name="sort_order" value="{{ item.sort_order if item else 0 }}">
+      <div class="help">數字越小越前面。</div>
+    </div>
+
+    <div class="form-check">
+      <input type="checkbox" id="visible" name="visible" {{ 'checked' if (item and item.visible) or not item }}>
+      <label for="visible">顯示在前台</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">儲存</button>
+      <a href="{{ url_for('admin_projects') if item_type == 'project' else url_for('admin_works') }}" class="btn btn-outline">取消</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

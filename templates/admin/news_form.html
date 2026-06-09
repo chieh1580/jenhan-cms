@@ -1,0 +1,64 @@
+{% extends 'admin/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="category">分類</label>
+      <input type="text" id="category" name="category" value="{{ item.category if item else '' }}" placeholder="例：合建知識、建案銷售、桃園房市觀察">
+    </div>
+
+    <div class="form-group">
+      <label for="title">標題 *</label>
+      <input type="text" id="title" name="title" value="{{ item.title if item else '' }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="summary">摘要</label>
+      <textarea id="summary" name="summary" rows="3">{{ item.summary if item else '' }}</textarea>
+      <div class="help">顯示在首頁卡片上的簡短說明。</div>
+    </div>
+
+    <div class="form-group">
+      <label for="content">內容</label>
+      <textarea id="content" name="content" rows="8">{{ item.content if item else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="link">連結</label>
+      <input type="text" id="link" name="link" value="{{ item.link if item else '' }}" placeholder="例：Facebook 貼文網址或外部連結">
+      <div class="help">訪客點擊「閱讀更多」時前往的網址。</div>
+    </div>
+
+    <div class="form-group">
+      <label for="image">封面圖片</label>
+      <input type="file" id="image" name="image" accept="image/*">
+      {% if item and item.image_id %}
+      <div class="current-img">
+        <p style="font-size:12px;color:#999;margin-top:8px;">目前圖片：</p>
+        <img src="{{ url_for('serve_image', image_id=item.image_id) }}" alt="目前圖片">
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="sort_order">排序順序</label>
+      <input type="number" id="sort_order" name="sort_order" value="{{ item.sort_order if item else 0 }}">
+    </div>
+
+    <div class="form-check">
+      <input type="checkbox" id="published" name="published" {{ 'checked' if (item and item.published) or not item }}>
+      <label for="published">發布（顯示在前台）</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">儲存</button>
+      <a href="{{ url_for('admin_news') }}" class="btn btn-outline">取消</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'admin/base.html' %}
+{% block title %}最新消息{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>最新消息</h1>
+  <a href="{{ url_for('admin_news_new') }}" class="btn btn-primary">新增消息</a>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>排序</th>
+      <th>分類</th>
+      <th>標題</th>
+      <th>發布</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.sort_order }}</td>
+      <td><span class="badge badge-gray">{{ item.category }}</span></td>
+      <td><strong>{{ item.title }}</strong></td>
+      <td>
+        {% if item.published %}
+        <span class="badge badge-green">已發布</span>
+        {% else %}
+        <span class="badge badge-yellow">草稿</span>
+        {% endif %}
+      </td>
+      <td>
+        <div class="actions">
+          <a href="{{ url_for('admin_news_edit', id=item.id) }}" class="btn btn-sm btn-outline">編輯</a>
+          <form method="POST" action="{{ url_for('admin_news_delete', id=item.id) }}" onsubmit="return confirm('確定要刪除嗎？')">
+            <button type="submit" class="btn btn-sm btn-danger">刪除</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="5" style="text-align:center;color:#999;padding:40px;">尚無最新消息</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'admin/base.html' %}
+{% block title %}總覽{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>總覽</h1>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <h3>在售建案</h3>
+    <div class="stat-num">{{ project_count }}</div>
+  </div>
+  <div class="stat-card">
+    <h3>歷屆建案</h3>
+    <div class="stat-num">{{ work_count }}</div>
+  </div>
+  <div class="stat-card">
+    <h3>最新消息</h3>
+    <div class="stat-num">{{ news_count }}</div>
+  </div>
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap;">
+  <a href="{{ url_for('admin_project_new') }}" class="btn btn-primary">新增在售建案</a>
+  <a href="{{ url_for('admin_work_new') }}" class="btn btn-dark">新增歷屆建案</a>
+  <a href="{{ url_for('admin_news_new') }}" class="btn btn-outline">新增最新消息</a>
+</div>
+{% endblock %}

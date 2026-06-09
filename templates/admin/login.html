@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登入 — 震瀚廣告後台</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+      background: #0f2a4a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 48px 40px;
+      width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .login-card h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f2a4a;
+      margin-bottom: 4px;
+    }
+    .login-card h1 span { color: #c8872e; }
+    .login-card p {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 32px;
+    }
+    .flash {
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      background: #f8d7da;
+      color: #721c24;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      font-family: inherit;
+    }
+    input:focus { outline: none; border-color: #c8872e; }
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #c8872e;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    button:hover { background: #a87020; }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <h1>震瀚<span>廣告</span></h1>
+    <p>後台管理系統</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% endwith %}
+    <form method="POST">
+      <label for="password">管理密碼</label>
+      <input type="password" id="password" name="password" placeholder="請輸入密碼" autofocus>
+      <button type="submit">登入</button>
+    </form>
+  </div>
+</body>
+</html>
